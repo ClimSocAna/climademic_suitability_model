@@ -1,17 +1,4 @@
-*
-!*/
-!.gitignore
-!.gitkeep
-__pycache__/
-!**/__init__.py
-
-# Ignore these folders completely
-artifacts/ts/
-notebooks/monthly_model/
-src/models/yearly_model/
-
-src/workflows/tune_hyperparameters.py
-
+.DS_Store
 #Ignore cache
 __pycache__/
 *.pyc

@@ -1,0 +1,33 @@
+{
+    "paths": {
+        "artifacts": "artifacts",
+        "raw_data": {
+            "compendium": "artifacts/data_raw/Compendium/aegypti_albopictus.csv",
+            "climate": "artifacts/data_raw/ERA5/era5_new/era_5_combined.nc",
+            "land_use": "artifacts/data_raw/HILDA+",
+            "population": "artifacts/data_raw/GHSL_POP",
+            "gmod_inaturalist": "artifacts/data_raw/GMOD/inaturalistpoints.csv",
+            "gmod_mosquito_alert": "artifacts/data_raw/GMOD/mosquitoAlert.csv"
+        },
+        "processed_data": {
+            "training_dataset": "artifacts/processed_data/training_dataset/training_dataset.csv",
+            "global_dataset": "artifacts/processed_data/global_dataset/",
+            "climate_worldwide": "artifacts/processed_data/global_dataset/climate/",
+            "population_worldwide": "artifacts/processed_data/global_dataset/population/",
+            "land_use_worldwide": "artifacts/processed_data/global_dataset/land_use/",
+            "gmod_dataset": "artifacts/processed_data/GMOD_dataset/"
+        },
+        "models_directory": "artifacts/models/",
+        "predictions": "artifacts/predictions/"
+    },
+    "hyperparameters": {
+        "albopictus": {
+            "nu": 0.02,
+            "gamma": 0.022452698151824272
+        },
+        "aegypti": {
+            "nu": 0.05,
+            "gamma": 0.021655142031459775
+        }
+    }
+}
