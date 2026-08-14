@@ -1,4 +1,5 @@
-![Climademic Suitability Model - Logo](log.jpg)
+<img src="https://github.com/ClimSocAna/climademic_suitability_model/blob/main/logo.jpg">
+
 ## About
 This repository contains the workflow pipeline for training and inferencing the Climademic Suitability Model, as described in the [article](https://doi.org/10.64898/2026.04.17.719149). The model combines One-Class Support Vector Machines (OC-SVM) with an incremental learning strategy to continuously update suitability predictions using newly available mosquito occurrence observations.
 
