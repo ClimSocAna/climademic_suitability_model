@@ -69,3 +69,25 @@ The current implementation is a collection of procedural scripts and has not yet
 
 - GMOD file depending on a global dataset
 - No explicit choice of the grid limits (now its only [-180; -90: 180, 90])
+
+## Citation
+
+When using the Climademic Suitability Model, please use the following citations
+
+	`@article {Siddiqui2026.ClimademicSuitabilityModel,
+	author = {Siddiqui, Tarique and Malysheva, Nadezhda and Hartner, Anna-Maria and Butyrin, Semyon and Parreira, Diogo and Genger, Jakob-Wendelin and Irrgang, Christopher},
+	title = {Suitable seasons: Global monthly habitat suitability for the arbovirus vectors Aedes aegypti and Aedes albopictus in 1975{\textendash}2024},
+	elocation-id = {2026.04.17.719149},
+	year = {2026},
+	doi = {10.64898/2026.04.17.719149},
+	URL = {https://www.biorxiv.org/content/early/2026/04/18/2026.04.17.719149},
+	eprint = {https://www.biorxiv.org/content/early/2026/04/18/2026.04.17.719149.full.pdf},
+	journal = {bioRxiv}
+}
+`
+
+## Acknowledgements
+
+The Federal Ministry of Research, Technology and Space (BMFTR) supports this study by funding the Climademic project (funding code 01LN2210A) within the framework of the Strategy Research for Sustainability (FONA). The Germany Federal
+Ministry of Health (BMG) supports this study by funding the AI-DAVis-PANDEMICS project (funding code 2523DAT400).
+
