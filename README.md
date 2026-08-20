@@ -83,8 +83,18 @@ When using the Climademic Suitability Model, please use the following citations
 	URL = {https://www.biorxiv.org/content/early/2026/04/18/2026.04.17.719149},
 	eprint = {https://www.biorxiv.org/content/early/2026/04/18/2026.04.17.719149.full.pdf},
 	journal = {bioRxiv}
-}
-`
+	}
+
+	@dataset{siddiqui_2026_21924442,
+  	author = {Siddiqui, Tarique and Malysheva, Nadezhda and Hartner, Anna-Maria and Parreira, Diogo and Genger, Jakob-Wendelin and. Irrgang, Christopher},
+  	title = {Global habitat suitability dataset for Aedes aegypti and Aedes albopictus derived using the Climademic Suitability Model},
+  	year         = 2026,
+  	publisher    = {Zenodo},
+  	version      = {2.0},
+  	doi          = {10.5281/zenodo.21924442},
+  	url          = {https://doi.org/10.5281/zenodo.21924442},
+	}
+	`
 
 ## Acknowledgements
 
