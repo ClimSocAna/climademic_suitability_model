@@ -85,7 +85,7 @@ When using the Climademic Suitability Model, please use the following citations
 	journal = {bioRxiv}
 	}
 
-	@dataset{siddiqui_2026_21924442,
+	@dataset{Siddiqui2026.ClimademicSuitabilityModel.Zenodo,
   	author = {Siddiqui, Tarique and Malysheva, Nadezhda and Hartner, Anna-Maria and Parreira, Diogo and Genger, Jakob-Wendelin and. Irrgang, Christopher},
   	title = {Global habitat suitability dataset for Aedes aegypti and Aedes albopictus derived using the Climademic Suitability Model},
   	year         = 2026,
