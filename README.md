@@ -74,28 +74,28 @@ The current implementation is a collection of procedural scripts and has not yet
 
 When using the Climademic Suitability Model, please use the following citations
 
-	```
-	@article {Siddiqui2026.ClimademicSuitabilityModel,
-	author = {Siddiqui, Tarique and Malysheva, Nadezhda and Hartner, Anna-Maria and Butyrin, Semyon and Parreira, Diogo and Genger, Jakob-Wendelin and Irrgang, Christopher},
-	title = {Suitable seasons: Global monthly habitat suitability for the arbovirus vectors Aedes aegypti and Aedes albopictus in 1975{\textendash}2024},
-	elocation-id = {2026.04.17.719149},
-	year = {2026},
-	doi = {10.64898/2026.04.17.719149},
-	URL = {https://www.biorxiv.org/content/early/2026/04/18/2026.04.17.719149},
-	eprint = {https://www.biorxiv.org/content/early/2026/04/18/2026.04.17.719149.full.pdf},
-	journal = {bioRxiv}
-	}
+```
+@article{Siddiqui2026.ClimademicSuitabilityModel,
+author = {Siddiqui, Tarique and Malysheva, Nadezhda and Hartner, Anna-Maria and Butyrin, Semyon and Parreira, Diogo and Genger, Jakob-Wendelin and Irrgang, Christopher},
+title = {Suitable seasons: Global monthly habitat suitability for the arbovirus vectors Aedes aegypti and Aedes albopictus in 1975{\textendash}2024},
+elocation-id = {2026.04.17.719149},
+year = {2026},
+doi = {10.64898/2026.04.17.719149},
+URL = {https://www.biorxiv.org/content/early/2026/04/18/2026.04.17.719149},
+eprint = {https://www.biorxiv.org/content/early/2026/04/18/2026.04.17.719149.full.pdf},
+journal = {bioRxiv}
+}
 
-	@dataset{Siddiqui2026.ClimademicSuitabilityModel.Zenodo,
-  	author = {Siddiqui, Tarique and Malysheva, Nadezhda and Hartner, Anna-Maria and Parreira, Diogo and Genger, Jakob-Wendelin and. Irrgang, Christopher},
-  	title = {Global habitat suitability dataset for Aedes aegypti and Aedes albopictus derived using the Climademic Suitability Model},
-  	year         = 2026,
-  	publisher    = {Zenodo},
-  	version      = {2.0},
-  	doi          = {10.5281/zenodo.21924442},
-  	url          = {https://doi.org/10.5281/zenodo.21924442},
-	}
-	```
+@dataset{Siddiqui2026.ClimademicSuitabilityModel.Zenodo,
+author = {Siddiqui, Tarique and Malysheva, Nadezhda and Hartner, Anna-Maria and Parreira, Diogo and Genger, Jakob-Wendelin and. Irrgang, Christopher},
+title = {Global habitat suitability dataset for Aedes aegypti and Aedes albopictus derived using the Climademic Suitability Model},
+year         = 2026,
+publisher    = {Zenodo},
+version      = {2.0},
+doi          = {10.5281/zenodo.21924442},
+url          = {https://doi.org/10.5281/zenodo.21924442},
+}
+```
 
 ## Acknowledgements
 
