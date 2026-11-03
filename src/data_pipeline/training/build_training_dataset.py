@@ -1,6 +1,7 @@
 # src/data_pipeline/training/build_training_dataset.py
 from pathlib import Path
 import pandas as pd
+import numpy as np
 
 from src.data_pipeline.training.observation_mask import build_observation_mask
 from src.data_pipeline.training.extract_climate import extract_climate_features
@@ -20,6 +21,7 @@ def build_training_dataset(config):
 
     climate_gdf = extract_climate_features(paths["raw_data"]["climate"], mask_gdf)
     land_use_gdf = extract_land_use_features(paths["raw_data"]["land_use"], mask_gdf)
+    
     population_df = extract_population_features(paths["raw_data"]["population"], mask_gdf)
 
     #merge extracted datasets
@@ -36,8 +38,16 @@ def build_training_dataset(config):
 
     training_dataset = (climate_gdf.merge(land_use_gdf[cols_to_add_land_use], on=merge_on_cols, how="left")
                         .merge(population_df[cols_to_add_pop], on=merge_on_cols, how="left"))
+
+    training_dataset = training_dataset[np.isfinite(training_dataset["area_land_km"])]
+    training_dataset = training_dataset[np.isfinite(training_dataset["ghsl_pop_counts"])]
+    # Some entries have zero land area (0 km2) but nonzero population counts,
+    #  resulting in infinite population density. Drop these entries.
+    mask = (training_dataset["area_land_km"] == 0) & (training_dataset["ghsl_pop_counts"] > 0)
+    training_dataset = training_dataset[~mask]
     
-    #calculate population density 
+    # calculate population density
+    # TODO does 0/0 produces NaN? replace with 0 instead 
     training_dataset["pop_density"] = training_dataset["ghsl_pop_counts"] / training_dataset["area_land_km"]
 
     training_dataset.to_csv(paths["processed_data"]["training_dataset"], sep=',', index=False, decimal='.')

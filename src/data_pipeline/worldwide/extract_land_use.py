@@ -16,6 +16,8 @@ def calculate_window_bounds(lon, lat, grid_step):
     top = lat + grid_step/ 2
     return left, bottom, right, top
 
+#TODO refactor & reuse part defined in training dataset
+#TODO allow for the Multipolygons & crossing of antimeridian (using multiple geometries / Multipolygon. See training data processing)
 def process_window(index, lon, lat, year, hilada_raster, categories, grid_resolution):
     #print(index/1036800 * 100, "%") #prints % of processed info
     result = {
@@ -33,6 +35,7 @@ def process_window(index, lon, lat, year, hilada_raster, categories, grid_resolu
 
     minx, miny, maxx, maxy = calculate_window_bounds(lon, lat, grid_resolution)
     window = rs.windows.from_bounds(minx, miny, maxx, maxy, hilada_raster.transform)
+    window_transform = hilada_raster.window_transform(window)
     lulc_data = hilada_raster.read(1, window=window)
     lulc_data = implace_nan(lulc_data, categories["None"]) #replace 99 with nan values
 
@@ -43,9 +46,9 @@ def process_window(index, lon, lat, year, hilada_raster, categories, grid_resolu
 
         area_total, _ = GEOD.geometry_area_perimeter(lulc_polygon)
         result["area_total_km"] = area_total / 1e6
-        area_land_km = calculate_area(lulc_data, [categories["Water"], categories["Ocean"]], hilada_raster.transform)
+        area_land_km = calculate_area(lulc_data, [categories["Water"], categories["Ocean"]], window_transform)
 
-        result["area_land_km"]  = area_land_km#calculate_area(lulc_data, [categories["Water"], categories["Ocean"]], hilada_raster.transform)
+        result["area_land_km"]  = area_land_km
         
         for category in valid_cat:
                 result[category] = np.sum(lulc_data == categories[category]) / total_pixels
@@ -127,4 +130,3 @@ def extract_land_use_features_parallel(lulc_dir_path, year, resolution=0.25, n_w
         )
     df_lulc = pd.DataFrame(results)  
     return df_lulc
-

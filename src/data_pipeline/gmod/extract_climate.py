@@ -30,8 +30,9 @@ def extract_climate_features(climate_fpath, gmod_df):
     year_end = climate_df["year"].max()
     clima_variables = ["t2m", "tp", "d2m", "si10"] #variables #TODO allow selection of variables.
     with xr.open_dataset(climate_fpath) as clima_ds:
-       # Only consider years contained in the mask dataset.
-        clima_ds = clima_ds.sel(time=slice(f"{year_start}-01-01", f"{year_end}-12-31"), expver=1)
+        #Only consider years contained in the mask dataset.
+        #clima_ds = clima_ds.sel(time=slice(f"{year_start}-01-01", f"{year_end}-12-31"), expver=1) # old version contains expver layer
+        clima_ds = clima_ds.sel(time=slice(f"{year_start}-01-01", f"{year_end}-12-31"))
         for var_name in clima_variables:
             extracted = climate_df.apply(lambda row: extrac_values_month_year(row.longitude, row.latitude, row.year, row.month, var_name, clima_ds),axis=1)
             monthly_df = pd.DataFrame(extracted.tolist(),columns=[f"{var_name}"],
@@ -43,5 +44,3 @@ def extract_climate_features(climate_fpath, gmod_df):
                 "latitude":  "obs_latitude",
             })
     return climate_df
-
-

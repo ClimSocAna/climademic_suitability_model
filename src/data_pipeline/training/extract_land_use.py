@@ -1,7 +1,7 @@
 # data_pipeline/training/extract_land_use.py
 import rasterio as rs
 import numpy as np
-from shapely import box, Polygon
+from shapely import box, Polygon, MultiPolygon
 from pyproj import Geod
 import pandas as pd
 from pathlib import Path
@@ -16,37 +16,64 @@ def _drop_only_water(dataframe):
 # count categories for each row / observation polygon
 def _count_categories(row, raster, categories):
 
-    #define the window that fully contains the observation polygon
-    hilda_window = get_window(row.mask_geometry.bounds, raster) 
-    transform = raster.window_transform(hilda_window)  # Get transform for this window
-    
-    #read only part of the data inside the defined window
-    data = raster.read(1, window=hilda_window)
-
-    data = np.where(data == categories["None"], np.nan, data) #replace 99 with np.nan values    
-    total_pixels = np.sum(~np.isnan(data)) # calculate the total number of not-Nan data pixels
+    #some observation polygones are crossing the antimeridian ()+/-180 degree longitude, and theregore 
+    # getting split into two (Multipolygon). Processing needs to be done for each polygon in the Multipolygon
+    geometries = (list(row.mask_geometry.geoms) if row.mask_geometry.geom_type == "MultiPolygon"
+                  else [row.mask_geometry])
 
     valid_cat = categories.keys() - {"None"} #all categories, except "None/NaN"
-    result = {category: np.nan for category in valid_cat} # init the categories values with np.nan
-    
-    if total_pixels > 0: #if it is 0 - do nothing. default values are already nan
-        for category in valid_cat:
-            # Calculate the proportion of pixels belonging to each category,
-            # # relative to the total number of valid (non-NaN) pixels.
-            #TODO calculate the fracture based on the area, not on the amount of pixels
-            result[category] =  (np.sum(data == categories[category]) / total_pixels).round(3)
-    
-    # define and save the polygon bounds/geomatry, used to calculate the results 
-    # (usually slightly  larger than the original bounds.)
-    hilda_window_bounds = rs.windows.bounds(hilda_window, raster.transform)
-    hilda_polygon = box(*hilda_window_bounds)
-    result['hilda_polygon'] = hilda_polygon
-    
-    # calculate area of land in km^2. will be used later to calculate population density
 
-    area_total, _ = GEOD.geometry_area_perimeter(hilda_polygon)
-    result["area_total_km"] = area_total / 1e6
-    result["area_land_km"]  = calculate_area(data, [categories["Water"], categories["Ocean"]], raster.transform)
+    area_total_km = 0.0
+    area_land_km  = 0.0
+
+    #result = {category: np.nan for category in valid_cat}
+    category_counts = {category: 0.0 for category in valid_cat}
+    total_valid_pixels = 0.0
+    hilda_polygons = []
+
+    for geom in geometries:
+        #define the window that fully contains the observation (sub)polygon
+        hilda_window = get_window(geom.bounds, raster) 
+        
+        window_transform = raster.window_transform(hilda_window)  # Get transform for this window
+        
+        #read only part of the data inside the defined window
+        data = raster.read(1, window=hilda_window)
+
+        data = np.where(data == categories["None"], np.nan, data) #replace 99 with np.nan values    
+        total_pixels = np.sum(~np.isnan(data)) # calculate the total number of not-Nan data pixels
+
+        total_valid_pixels += total_pixels
+        if total_pixels > 0: #if it is 0 - do nothing. default values are already nan
+            for category in valid_cat:
+                # Calculate the proportion of pixels belonging to each category,
+                # # relative to the total number of valid (non-NaN) pixels.
+                #TODO calculate the fracture based on the area, not on the amount of pixels
+                category_counts[category] += np.sum(data == categories[category])
+    
+        # define and save the polygon bounds/geomatry, used to calculate the results 
+        # (usually slightly  larger than the original bounds.)
+        hilda_window_bounds = rs.windows.bounds(hilda_window, raster.transform)
+        hilda_polygon = box(*hilda_window_bounds)
+        
+        hilda_polygons.append(hilda_polygon)
+    
+        # calculate area of land in km^2. will be used later to calculate population density
+        area_total_geom, _ = GEOD.geometry_area_perimeter(hilda_polygon)
+        area_total_km += abs(area_total_geom)
+
+        area_land_geom = calculate_area(data, [categories["Water"], categories["Ocean"]], window_transform)
+        area_land_km += abs(area_land_geom)
+
+    # Calculate proportions AFTER processing all geometries
+    result = { category: (category_counts[category]/ total_valid_pixels if total_valid_pixels > 0 else np.nan)
+              for category in valid_cat}
+
+    # Preserve all window polygons
+    result["hilda_polygon"] = (hilda_polygons[0] if len(hilda_polygons) == 1
+                               else MultiPolygon(hilda_polygons))
+    result["area_total_km"] = (area_total_km / 1e6 if total_valid_pixels > 0 else np.nan)
+    result["area_land_km"]  = (area_land_km if total_valid_pixels > 0 else np.nan)
     
     return pd.Series(result)
 

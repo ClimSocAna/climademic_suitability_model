@@ -38,8 +38,10 @@ def _make_geodetic_box(x, y, offset_km):
 
     geometry = box(minx, miny, maxx, maxy)
 
-    # Detect crossing of the 0-degree line and split polygons into two.
-    # # Otherwise, it would create a polygon spanning the entire latitude.
+
+
+    # Detect crossing of the antimeridian (+/-180 degree longitude) and split the geometry into two polygons.
+    # Otherwise, it would create a polygon spanning the entire latitude.
     if minx > maxx:
         geometry = MultiPolygon([
             box(minx, miny, 180, maxy),

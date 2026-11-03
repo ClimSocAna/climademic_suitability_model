@@ -39,8 +39,9 @@ def extract_climate_features(climate_fpath, mask_gdf):
     year_end = clima_gdf["YEAR"].max()
     clima_variables = ["t2m", "tp", "d2m", "si10"] #variables #TODO allow selection of variables.
     with xr.open_dataset(climate_fpath) as clima_ds:
-       # Only consider years contained in the mask dataset.
-        clima_ds = clima_ds.sel(time=slice(f"{year_start}-01-01", f"{year_end}-12-31"), expver=1)
+        # Only consider years contained in the mask dataset.
+        #clima_ds = clima_ds.sel(time=slice(f"{year_start}-01-01", f"{year_end}-12-31"), expver=1) # old version contains expver layer
+        clima_ds = clima_ds.sel(time=slice(f"{year_start}-01-01", f"{year_end}-12-31"))
 
         for var_name in clima_variables:
             print(var_name)
